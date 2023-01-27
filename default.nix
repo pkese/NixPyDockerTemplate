@@ -18,7 +18,7 @@ let
     pytest
   ]);
 
-  packages = rec {
+  exports = {
 
     inherit dockerImageName;
 
@@ -52,4 +52,5 @@ let
     };
   };
 in
-  packages
+  exports
+
