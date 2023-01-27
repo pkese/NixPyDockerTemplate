@@ -39,10 +39,10 @@ let
       name = dockerImageName;
       tag = "latest";
       contents = [
-        pkgs.bash # for interactive shell (make dockerShell)
+        pkgs.busybox # base utils for interactive shell (make dockerShell)
         pkgs.gcc # pymc/aesara requires g++
         (pkgs.python3.withPackages commonPythonPkgs)
-        ./app # source code (contents get copied to root of the image without /app prefix)
+        ./app # source code: contents get copied to root of the image without /app prefix
       ]; 
       config = {
         Cmd = [ "gunicorn" "-k" "uvicorn.workers.UvicornWorker" "--workers=2" "--bind" "0.0.0.0:8000" "main:app" ];

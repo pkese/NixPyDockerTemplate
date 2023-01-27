@@ -19,7 +19,7 @@ docker: docker.img
 # run /bin/bash inside docker container
 dockerShell: docker.img
 	docker load < $<
-	docker run -p 127.0.0.1:8000:8000/tcp -i -t ${DOCKER_IMAGE_NAME} /bin/bash
+	docker run -p 127.0.0.1:8000:8000/tcp -i -t ${DOCKER_IMAGE_NAME} /bin/sh
 
 # dump info about docker container
 dockerInfo: docker.img
