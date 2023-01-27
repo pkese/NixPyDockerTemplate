@@ -27,7 +27,7 @@ dockerInfo: docker.img
 	docker image inspect ${DOCKER_IMAGE_NAME}
 
 clean:
-	rm -rf ./docker.img ./docker.*.img
+	rm -rf ./docker.img ./docker.*.img ./app/__pycache__
 
 # activate nix environment manually
 # (use if direnv is not installed)

@@ -60,9 +60,9 @@ If you're having problems with non-root Docker access even after following the a
 
 ## Makefile targets
 
-Run:
+Once you have managed to activate Nix environment, run:
 - `make docker` - to build and run Docker image
 - `make test` - to run Python tests without Docker
 - `make watch` - to start web server locally (without Docker) and reload on edits
 
-Read `Makefile` for info.
+Read `Makefile` for more info.
