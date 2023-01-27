@@ -25,17 +25,17 @@ nix (Nix) 2.12.0
 ### Install direnv
 
 ```sh
-sudo install direnv
+sudo apt install direnv
 ```
 
-Add the following line at the end of the ~/.bashrc file:
+Add the following line at the end of the `~/.bashrc` file:
 
 ```sh
 eval "$(direnv hook bash)"
 ```
 
-Make sure it appears even after rvm, git-prompt and other shell extensions that manipulate the prompt.
-Optionally restart the shell.  
+Make sure it appears even after `rvm`, `git-prompt` and other shell extensions that manipulate the prompt.  
+Restart the shell.  
 More info at: https://direnv.net/docs/hook.html
 
 Then, when you cd into the project directory, direnv should automatically detect `.envrc` file and activate your Nix environment.
@@ -47,9 +47,17 @@ Run:
 direnv allow
 ```
 
-Note: Direnv has lots of recipes available at https://github.com/direnv/direnv/wiki
+Note: Direnv has lots of cool recipes available at https://github.com/direnv/direnv/wiki
 
-## `make` targets
+### Install Docker
+
+Find and follow the instructions to install Docker to your OS, e.g. `snap install docker`.
+
+The Makefile is assuming that you've configured your Docker to be accessible as non-root user.  
+See https://docs.docker.com/engine/install/linux-postinstall/ for instructions, or fix Makefile by adding `sudo` before `docker` commands.
+If you're having problems with non-root Docker access even after following the above instructions, try running `sudo chown $USER /var/run/docker.sock`
+
+## `Makefile` targets
 
 Run:
 - `make docker` - to build and run Docker image
