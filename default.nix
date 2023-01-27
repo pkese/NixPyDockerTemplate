@@ -6,12 +6,8 @@ let
 
   # python packages required for both docker and development
   commonPythonPkgs = (py: with py; [
-    requests
     pymc
     fastapi
-    numpyro
-    pydantic
-    requests
     uvicorn
     gunicorn
   ]);
