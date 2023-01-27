@@ -1,17 +1,48 @@
 
-image:
-	nix-build -A dockerImage
+# docker image name as defined in default.nix
+DOCKER_IMAGE_NAME := $(shell nix --extra-experimental-features nix-command eval -f default.nix dockerImageName)
 
-image.mlk:
-	# for add extra environment variable and --impure flag
-	# to permit installing non-free 'mkl'
-	NIXPKGS_ALLOW_UNFREE=1 nix-build --impure -A dockerImage
+# build docker image
+docker.img: default.nix $(wildcard app/**/*)
+	nix-build -A dockerImage --out-link $@
 
-test: image
-	#$(nix-build -A dockerImage) | docker load
-	docker load < result
-	docker run -p 127.0.0.1:8000:8000/tcp pyhello
+#docker.mkl.img: default.nix $(wildcard app/**/*)
+#	# add extra environment variable and --impure flag
+#	# to permit installing non-free 'mkl'
+#	NIXPKGS_ALLOW_UNFREE=1 nix-build --impure -A dockerImage --out-link $@
 
-shell: image
-	docker load < result
-	docker run -p 127.0.0.1:8000:8000/tcp -i -t pyhello /bin/bash
+# run docker container
+docker: docker.img
+	docker load < $<
+	docker run -p 127.0.0.1:8000:8000/tcp ${DOCKER_IMAGE_NAME}
+
+# run /bin/bash inside docker container
+dockerShell: docker.img
+	docker load < $<
+	docker run -p 127.0.0.1:8000:8000/tcp -i -t ${DOCKER_IMAGE_NAME} /bin/bash
+
+# dump info about docker container
+dockerInfo: docker.img
+	docker load < $<
+	docker image inspect ${DOCKER_IMAGE_NAME}
+
+clean:
+	rm -rf ./docker.img ./docker.*.img
+
+# activate nix environment manually
+# (use if direnv is not installed)
+nixify:
+	nix-shell -A devShell
+
+# ------ with nix environment activated ------------
+
+# start web server and reload on file changes
+watch:
+	uvicorn app.main:app --reload
+
+# run python tests
+.PHONY: test
+test:
+	@python test/test.py
+
+
